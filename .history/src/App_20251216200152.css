@@ -1,0 +1,346 @@
+/* Professional Color Scheme */
+:root {
+  --primary-color: #2563eb;
+  --primary-dark: #1e40af;
+  --primary-light: #60a5fa;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-light: #94a3b8;
+  --bg-light: #f8fafc;
+  --bg-card: #ffffff;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+}
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+}
+
+.auth-wrapper {
+  width: 100%;
+  max-width: 420px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.account-wrapper {
+  width: 100%;
+  max-width: 580px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Navbar Styles */
+.navbar {
+  background-color: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--primary-color) !important;
+  letter-spacing: -0.5px;
+  transition: color 0.3s ease;
+}
+
+.navbar-brand:hover {
+  color: var(--primary-dark) !important;
+}
+
+.navbar-text {
+  color: var(--text-secondary) !important;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.nav-link {
+  color: var(--text-primary) !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+  padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover {
+  color: var(--primary-color) !important;
+}
+
+/* Card Styles */
+.card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  background-color: var(--bg-card);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card-title {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Form Styles */
+.form-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.form-control {
+  border: 1.5px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background-color: #fafbfc;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.08);
+}
+
+.form-control::placeholder {
+  color: var(--text-light);
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.2px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  text-transform: uppercase;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-outline-light {
+  border-radius: 6px;
+  font-weight: 600;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-light:hover {
+  border-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-light {
+  border-radius: 6px;
+  font-weight: 600;
+  background-color: #ffffff;
+  color: var(--primary-color) !important;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-light:hover {
+  background-color: #f5f7fa;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Input Group */
+.input-group {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.input-group .form-control {
+  border-radius: 6px 0 0 6px;
+}
+
+.password-toggle-btn {
+  border: 1.5px solid var(--border-color);
+  border-left: none;
+  background-color: #fafbfc;
+  color: var(--text-light);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  padding: 0.75rem 1rem;
+}
+
+.password-toggle-btn:hover,
+.password-toggle-btn:focus {
+  border-color: var(--primary-color);
+  background-color: #f0f6ff;
+  color: var(--primary-color);
+  box-shadow: none;
+}
+
+.password-toggle-btn .bi {
+  font-size: 1rem;
+}
+
+/* Alert Styles */
+.alert {
+  border-radius: 6px;
+  border: 1px solid;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert-danger {
+  background-color: #ffebee;
+  color: #c62828;
+  border-color: #ef5350;
+}
+
+.alert-success {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border-color: #66bb6a;
+}
+
+/* Links */
+.link-primary {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.link-primary:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+/* Divider */
+hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 1.5rem 0;
+}
+
+/* Text Utilities */
+.text-muted {
+  color: var(--text-secondary) !important;
+  font-size: 0.9rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Loading Spinner */
+.spinner-border {
+  border-width: 3px;
+  color: var(--primary-color);
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .card-title {
+    font-size: 1.4rem;
+  }
+  
+  .auth-wrapper {
+    max-width: 100%;
+  }
+  
+  .account-wrapper {
+    max-width: 100%;
+  }
+  
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+  
+  .form-label {
+    font-size: 0.85rem;
+  }
+}
