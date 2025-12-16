@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext.jsx'
 
 function LoginPage() {
-  const { login, refreshUsers } = useAuth()
+  const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -16,39 +16,7 @@ function LoginPage() {
   const [resetMessage, setResetMessage] = useState('')
   const [resetError, setResetError] = useState('')
   const [newPassword, setNewPassword] = useState('')
-  const [showNewPassword, setShowNewPassword] = useState(false)
   const [resetStep, setResetStep] = useState('email') // 'email' or 'password'
-
-  const getPasswordStrength = (pwd) => {
-    if (!pwd) return { level: 0, text: '', color: '' }
-    
-    let strength = 0
-    
-    // Length check
-    if (pwd.length >= 6) strength++
-    if (pwd.length >= 10) strength++
-    if (pwd.length >= 14) strength++
-    
-    // Uppercase check
-    if (/[A-Z]/.test(pwd)) strength++
-    
-    // Lowercase check
-    if (/[a-z]/.test(pwd)) strength++
-    
-    // Number check
-    if (/[0-9]/.test(pwd)) strength++
-    
-    // Special character check
-    if (/[!@#$%^&*()_+=\-{};':"\\|,.<>/?]/.test(pwd)) strength++
-    
-    if (strength <= 2) {
-      return { level: 1, text: 'Weak', color: '#ef4444' }
-    } else if (strength <= 4) {
-      return { level: 2, text: 'Medium', color: '#f59e0b' }
-    } else {
-      return { level: 3, text: 'Strong', color: '#22c55e' }
-    }
-  }
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -108,6 +76,11 @@ function LoginPage() {
     }
   }
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
   const handleForgotPasswordEmail = () => {
     setResetError('')
     setResetMessage('')
@@ -123,7 +96,7 @@ function LoginPage() {
     }
 
     // Check if email exists in localStorage
-    const users = JSON.parse(localStorage.getItem('account_manager_users') || '[]')
+    const users = JSON.parse(localStorage.getItem('users') || '[]')
     const userExists = users.find(u => u.email === resetEmail)
 
     if (!userExists) {
@@ -151,16 +124,12 @@ function LoginPage() {
     }
 
     // Update password in localStorage
-    const users = JSON.parse(localStorage.getItem('account_manager_users') || '[]')
+    const users = JSON.parse(localStorage.getItem('users') || '[]')
     const updatedUsers = users.map(u => 
       u.email === resetEmail ? { ...u, password: newPassword } : u
     )
 
-    localStorage.setItem('account_manager_users', JSON.stringify(updatedUsers))
-    
-    // Refresh users in AuthContext so login can verify the new password
-    refreshUsers()
-    
+    localStorage.setItem('users', JSON.stringify(updatedUsers))
     setResetMessage('Password reset successfully! You can now login.')
     setResetStep('email')
     setResetEmail('')
@@ -170,9 +139,6 @@ function LoginPage() {
     setTimeout(() => {
       setShowForgotPassword(false)
       setResetMessage('')
-      // Clear form fields for next reset
-      setEmail('')
-      setPassword('')
     }, 2000)
   }
 
@@ -215,7 +181,7 @@ function LoginPage() {
                   <div className="invalid-feedback d-block">{errors.email}</div>
                 )}
               </div>
-              <div className="mb-3">
+              <div className="mb-4">
                 <label htmlFor="password" className="form-label">
                   Password
                 </label>
@@ -242,16 +208,6 @@ function LoginPage() {
                   <div className="invalid-feedback d-block">{errors.password}</div>
                 )}
               </div>
-              <div className="mb-4 text-end">
-                <button
-                  type="button"
-                  className="btn btn-link p-0"
-                  onClick={() => setShowForgotPassword(true)}
-                  style={{ fontSize: '0.85rem' }}
-                >
-                  Forgot Password?
-                </button>
-              </div>
               <button type="submit" className="btn btn-primary w-100" disabled={isSubmitting}>
                 {isSubmitting ? 'Signing in...' : 'Sign In'}
               </button>
@@ -263,107 +219,6 @@ function LoginPage() {
                 Create an account
               </Link>
             </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Forgot Password Modal */}
-      {showForgotPassword && (
-        <div className="modal-backdrop show" />
-      )}
-      <div className={`modal ${showForgotPassword ? 'show' : ''}`} style={{ display: showForgotPassword ? 'block' : 'none' }}>
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Reset Password</h5>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={closeForgotPasswordModal}
-              />
-            </div>
-            <div className="modal-body">
-              {resetMessage && (
-                <div className="alert alert-success" role="alert">
-                  {resetMessage}
-                </div>
-              )}
-              {resetError && (
-                <div className="alert alert-danger" role="alert">
-                  {resetError}
-                </div>
-              )}
-
-              {resetStep === 'email' ? (
-                <div>
-                  <p className="text-muted mb-3">Enter your email address to reset your password</p>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter your email"
-                    value={resetEmail}
-                    onChange={(e) => setResetEmail(e.target.value)}
-                  />
-                </div>
-              ) : (
-                <div>
-                  <p className="text-muted mb-3">Enter your new password</p>
-                  <div className="input-group mb-2">
-                    <input
-                      type={showNewPassword ? 'text' : 'password'}
-                      className="form-control"
-                      placeholder="Enter new password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => setShowNewPassword((prev) => !prev)}
-                      aria-label={showNewPassword ? 'Hide password' : 'Show password'}
-                    >
-                      <i className={showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'} />
-                    </button>
-                  </div>
-                  {newPassword && (
-                    <div className="password-strength-container mt-2 mb-3">
-                      <div className="password-strength-bar">
-                        <div
-                          className="password-strength-fill"
-                          style={{
-                            width: `${(getPasswordStrength(newPassword).level / 3) * 100}%`,
-                            backgroundColor: getPasswordStrength(newPassword).color,
-                            transition: 'all 0.3s ease'
-                          }}
-                        />
-                      </div>
-                      <small
-                        className="password-strength-text"
-                        style={{ color: getPasswordStrength(newPassword).color, fontWeight: 700 }}
-                      >
-                        Strength: {getPasswordStrength(newPassword).text}
-                      </small>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-outline-secondary"
-                onClick={closeForgotPasswordModal}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={resetStep === 'email' ? handleForgotPasswordEmail : handleResetPassword}
-              >
-                {resetStep === 'email' ? 'Next' : 'Reset Password'}
-              </button>
-            </div>
           </div>
         </div>
       </div>

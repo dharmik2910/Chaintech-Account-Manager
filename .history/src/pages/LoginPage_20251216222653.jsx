@@ -158,9 +158,6 @@ function LoginPage() {
 
     localStorage.setItem('account_manager_users', JSON.stringify(updatedUsers))
     
-    // Refresh users in AuthContext so login can verify the new password
-    refreshUsers()
-    
     setResetMessage('Password reset successfully! You can now login.')
     setResetStep('email')
     setResetEmail('')

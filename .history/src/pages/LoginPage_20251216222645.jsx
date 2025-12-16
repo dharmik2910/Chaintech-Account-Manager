@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext.jsx'
 
 function LoginPage() {
-  const { login, refreshUsers } = useAuth()
+  const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -157,9 +157,6 @@ function LoginPage() {
     )
 
     localStorage.setItem('account_manager_users', JSON.stringify(updatedUsers))
-    
-    // Refresh users in AuthContext so login can verify the new password
-    refreshUsers()
     
     setResetMessage('Password reset successfully! You can now login.')
     setResetStep('email')

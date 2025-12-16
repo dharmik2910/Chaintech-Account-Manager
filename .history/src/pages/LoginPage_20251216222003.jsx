@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext.jsx'
 
 function LoginPage() {
-  const { login, refreshUsers } = useAuth()
+  const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -16,39 +16,7 @@ function LoginPage() {
   const [resetMessage, setResetMessage] = useState('')
   const [resetError, setResetError] = useState('')
   const [newPassword, setNewPassword] = useState('')
-  const [showNewPassword, setShowNewPassword] = useState(false)
   const [resetStep, setResetStep] = useState('email') // 'email' or 'password'
-
-  const getPasswordStrength = (pwd) => {
-    if (!pwd) return { level: 0, text: '', color: '' }
-    
-    let strength = 0
-    
-    // Length check
-    if (pwd.length >= 6) strength++
-    if (pwd.length >= 10) strength++
-    if (pwd.length >= 14) strength++
-    
-    // Uppercase check
-    if (/[A-Z]/.test(pwd)) strength++
-    
-    // Lowercase check
-    if (/[a-z]/.test(pwd)) strength++
-    
-    // Number check
-    if (/[0-9]/.test(pwd)) strength++
-    
-    // Special character check
-    if (/[!@#$%^&*()_+=\-{};':"\\|,.<>/?]/.test(pwd)) strength++
-    
-    if (strength <= 2) {
-      return { level: 1, text: 'Weak', color: '#ef4444' }
-    } else if (strength <= 4) {
-      return { level: 2, text: 'Medium', color: '#f59e0b' }
-    } else {
-      return { level: 3, text: 'Strong', color: '#22c55e' }
-    }
-  }
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -123,7 +91,7 @@ function LoginPage() {
     }
 
     // Check if email exists in localStorage
-    const users = JSON.parse(localStorage.getItem('account_manager_users') || '[]')
+    const users = JSON.parse(localStorage.getItem('users') || '[]')
     const userExists = users.find(u => u.email === resetEmail)
 
     if (!userExists) {
@@ -151,16 +119,12 @@ function LoginPage() {
     }
 
     // Update password in localStorage
-    const users = JSON.parse(localStorage.getItem('account_manager_users') || '[]')
+    const users = JSON.parse(localStorage.getItem('users') || '[]')
     const updatedUsers = users.map(u => 
       u.email === resetEmail ? { ...u, password: newPassword } : u
     )
 
-    localStorage.setItem('account_manager_users', JSON.stringify(updatedUsers))
-    
-    // Refresh users in AuthContext so login can verify the new password
-    refreshUsers()
-    
+    localStorage.setItem('users', JSON.stringify(updatedUsers))
     setResetMessage('Password reset successfully! You can now login.')
     setResetStep('email')
     setResetEmail('')
@@ -170,9 +134,6 @@ function LoginPage() {
     setTimeout(() => {
       setShowForgotPassword(false)
       setResetMessage('')
-      // Clear form fields for next reset
-      setEmail('')
-      setPassword('')
     }, 2000)
   }
 
@@ -308,43 +269,13 @@ function LoginPage() {
               ) : (
                 <div>
                   <p className="text-muted mb-3">Enter your new password</p>
-                  <div className="input-group mb-2">
-                    <input
-                      type={showNewPassword ? 'text' : 'password'}
-                      className="form-control"
-                      placeholder="Enter new password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => setShowNewPassword((prev) => !prev)}
-                      aria-label={showNewPassword ? 'Hide password' : 'Show password'}
-                    >
-                      <i className={showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'} />
-                    </button>
-                  </div>
-                  {newPassword && (
-                    <div className="password-strength-container mt-2 mb-3">
-                      <div className="password-strength-bar">
-                        <div
-                          className="password-strength-fill"
-                          style={{
-                            width: `${(getPasswordStrength(newPassword).level / 3) * 100}%`,
-                            backgroundColor: getPasswordStrength(newPassword).color,
-                            transition: 'all 0.3s ease'
-                          }}
-                        />
-                      </div>
-                      <small
-                        className="password-strength-text"
-                        style={{ color: getPasswordStrength(newPassword).color, fontWeight: 700 }}
-                      >
-                        Strength: {getPasswordStrength(newPassword).text}
-                      </small>
-                    </div>
-                  )}
+                  <input
+                    type="password"
+                    className="form-control"
+                    placeholder="Enter new password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
                 </div>
               )}
             </div>

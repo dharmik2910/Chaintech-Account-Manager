@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../AuthContext.jsx'
 
 function LoginPage() {
-  const { login, refreshUsers } = useAuth()
+  const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -157,10 +157,6 @@ function LoginPage() {
     )
 
     localStorage.setItem('account_manager_users', JSON.stringify(updatedUsers))
-    
-    // Refresh users in AuthContext so login can verify the new password
-    refreshUsers()
-    
     setResetMessage('Password reset successfully! You can now login.')
     setResetStep('email')
     setResetEmail('')
@@ -170,9 +166,6 @@ function LoginPage() {
     setTimeout(() => {
       setShowForgotPassword(false)
       setResetMessage('')
-      // Clear form fields for next reset
-      setEmail('')
-      setPassword('')
     }, 2000)
   }
 
@@ -308,43 +301,13 @@ function LoginPage() {
               ) : (
                 <div>
                   <p className="text-muted mb-3">Enter your new password</p>
-                  <div className="input-group mb-2">
-                    <input
-                      type={showNewPassword ? 'text' : 'password'}
-                      className="form-control"
-                      placeholder="Enter new password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() => setShowNewPassword((prev) => !prev)}
-                      aria-label={showNewPassword ? 'Hide password' : 'Show password'}
-                    >
-                      <i className={showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'} />
-                    </button>
-                  </div>
-                  {newPassword && (
-                    <div className="password-strength-container mt-2 mb-3">
-                      <div className="password-strength-bar">
-                        <div
-                          className="password-strength-fill"
-                          style={{
-                            width: `${(getPasswordStrength(newPassword).level / 3) * 100}%`,
-                            backgroundColor: getPasswordStrength(newPassword).color,
-                            transition: 'all 0.3s ease'
-                          }}
-                        />
-                      </div>
-                      <small
-                        className="password-strength-text"
-                        style={{ color: getPasswordStrength(newPassword).color, fontWeight: 700 }}
-                      >
-                        Strength: {getPasswordStrength(newPassword).text}
-                      </small>
-                    </div>
-                  )}
+                  <input
+                    type="password"
+                    className="form-control"
+                    placeholder="Enter new password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
                 </div>
               )}
             </div>
