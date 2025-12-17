@@ -75,3 +75,9 @@ The app is intentionally simple and uses **client-side storage** (localStorage) 
    npm run build
    ```
 
+
+## Notes
+
+- This application performs **real-time client-side validation**.
+- User data and session information are stored using **localStorage**.
+- Since there is no backend, **clearing browser cache or site data will remove all registered users**.
