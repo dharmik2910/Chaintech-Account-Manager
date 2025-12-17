@@ -1,6 +1,6 @@
 ## Account Manager React App
 
-This is a small React (Vite) application that lets users **register**, **log in**, and **view/edit** their account information.
+This is a React (Vite) application that lets users **register**, **log in**, and **view/edit** their account information.
 
 The app is intentionally simple and uses **client-side storage** (localStorage) instead of a real backend, which makes it easy to run and review for the purposes of this test.
 
